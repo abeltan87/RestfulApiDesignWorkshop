@@ -24,19 +24,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Start of workshop
+app.get('api/states', (req, resp) => {
+    let result = db.findAllStates();
+    resp.status(200).json(result);
+});
 
-// TODO 1/2 Load schemas
-app.use(
-	OpenAPIValidator.middleware({
-		apiSpec: '' // OpenAPI spec here
-	})
-)
-	
-// Start of workshop
-// TODO 2/2 Copy your routes from workshop02 here
+let cityStates = db.findCitiesByState(state, {limit:30, offset:0});
 
-// End of workshop
+app.get('api/city/:cityId', (req, resp) => {
+	let cityId = req.params.cityId;
+    let result = db.findCityById(cityId);
+	if(result != null)
+		resp.status(200).json(result);
+	else
+		resp.status(200).json(null);
+});
+
+app.post('/api/city', (req, resp) => {
+	let cityDetails = req.params.cityDetails;
+	let result = db.insertCity(cityDetails);
+	resp.status(200).json(result);
+});
 
 app.use('/schema', express.static(join(__dirname, 'schema')));
 

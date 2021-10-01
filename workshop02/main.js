@@ -19,19 +19,35 @@ app.use(express.urlencoded({ extended: true }));
 // Mandatory workshop
 // TODO GET /api/states
 // Use db.findAllStates()
-
+app.get('api/states', (req, resp) => {
+    let result = db.findAllStates();
+    resp.status(200).json(result);
+});
 
 // TODO GET /api/state/:state
 // Use db.findCitiesByState(:state, { limit?: 10, offset?: 0 })
 // 2nd parameter is optional
+let cityStates = db.findCitiesByState(state, {limit:30, offset:0});
 
 
 // TODO GET /api/city/:cityId
 // Use db.findCityById(:id) returns null if not found
-
+app.get('api/city/:cityId', (req, resp) => {
+	let cityId = req.params.cityId;
+    let result = db.findCityById(cityId);
+	if(result != null)
+		resp.status(200).json(result);
+	else
+		resp.status(200).json(null);
+});
 
 // TODO POST /api/city
 // Use db.insertCity(cityDetails)
+app.post('/api/city', (req, resp) => {
+	let cityDetails = req.params.cityDetails;
+	let result = db.insertCity(cityDetails);
+	resp.status(200).json(result);
+});
 
 // Optional workshop
 // TODO HEAD /api/state/:state
