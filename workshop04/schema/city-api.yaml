@@ -1,0 +1,116 @@
+openapi: 3.0.1
+info:
+  title: Workshop 3
+  version: 1.0.0
+paths:
+  /api/states:
+    get:
+      description: get states
+      responses:
+        200:
+          description: all states returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/state/{state}:
+    get:
+      description: get url
+      parameters:
+      - name: state
+        in: path
+        description: state
+        required: true
+        schema:
+          $ref: '#/components/schemas/state'
+      responses:
+        200:
+          description: url returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/{state}/count:
+    get:
+      description: get cities count
+      parameters:
+      - name: state
+        in: path
+        description: state
+        required: true
+        schema:
+          $ref: '#/components/schemas/state'
+      responses:
+        200:
+          description: city count returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/count'
+  /api/city/{cityId}:
+    get:
+      description: get city by id
+      parameters:
+      - name: cityId
+        in: path
+        description: cityId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: city returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/city'
+  /api/cities/{cityName}:
+    get:
+      description: get city by name
+      parameters:
+      - name: cityName
+        in: path
+        description: city name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: city returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/city'
+components:
+  schemas:
+    state:
+      type: string
+      enum: ["MA","RI","NH","ME","VT","CT","NY","NJ","PA","DE","DC","MD","VA","WV","NC","SC","GA","FL","AL","TN","MS","KY","OH","IN","MI","IA","WI","MN","SD","ND","MT","IL","MO","KS","NE","LA","AR","OK","TX","CO","WY","ID","UT","AZ","NM","NV","CA","HI","OR","WA","AK"]
+    city:
+      type: object
+      properties:
+        _id:
+          type: string
+        city:
+          type: string
+        loc:
+          type: array
+          items: 
+            type: number
+        pop:
+          type: integer
+        state:
+          $ref: '#/components/schemas/state'
+    count:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/state'
+        cities:
+          type: integer
